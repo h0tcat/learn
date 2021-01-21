@@ -247,11 +247,15 @@ public class Cal
 
       //結果
       System.out.println("-----------------------------------結　果-----------------------------------");
-      System.out.println("出題数　："+noq+"問");
-      System.out.println("正解数　："+corr+"問");
-      System.out.println("不正解数："+inco+"問");
-      System.out.println("正答率　： ％");
-      System.out.println("");
+      System.out.printf("出題数　：%d問\n",noq);
+      System.out.printf("正解数　：%d問\n",corr);
+      System.out.printf("不正解数：%d問\n",inco);
+	  if(corr<=0)
+		  System.out.printf("正答率　：%d％\n",0);
+	  else{
+		  System.out.printf("正答率　：%d％\n",Math.round((double)corr / noq * 100.0));
+	  }
+      System.out.println();
     }
   }
 }
