@@ -1,6 +1,10 @@
 import java.util.Scanner;
+import java.util.Base64.Encoder;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;	
 
 public class Makepass
@@ -10,14 +14,14 @@ public class Makepass
 		Scanner scan = new Scanner(System.in);
 		
 		//定数を宣言（Asciiコード）
-		final int Asc_exc = 33;
-		final int Asc_0 = 48;
-		final int Asc_9 = 57;
-		final int Asc_A = 65;
-		final int Asc_Z = 90;
-		final int Asc_a = 97;
-		final int Asc_z = 122;
-		final int Asc_til = 126;
+		final int Asc_exc = '!';
+		final int Asc_0 = '0';
+		final int Asc_9 = '9';
+		final int Asc_A = 'A';
+		final int Asc_Z = 'Z';
+		final int Asc_a = 'a';
+		final int Asc_z = 'z';
+		final int Asc_tilde = '~';
 
 		//入力を受ける
 		int len = 0;
@@ -38,40 +42,46 @@ public class Makepass
 		mark = scan.next();
 		scan.close();
 
-		int i = 0;
-		char[] pass = new char[len];
+		StringBuilder pass = new StringBuilder();
 		
 		Random random = new Random();
+		//記号ありのパスワード生成
+		
 		if(mark.equals("y") || mark.equals("Y")){
-			while(i < len){
-				int rand = random.nextInt(Asc_til) + Asc_exc;
-					pass[i] = (char)rand;
-					i++;
-				}
-		}else if(mark.equals("n") || mark.equals("N")){
-			while(i < len) {
-				int rand = random.nextInt(Asc_z) + Asc_0;
-				if(rand >= Asc_0 && rand <= Asc_9 || rand >= Asc_A && rand <= Asc_Z || rand >= Asc_a && rand <= Asc_z) {
-					pass[i] = (char)rand;
-
-					i++;
+			
+			for(int j=0;j<len;j++){	
+				for(int i=0;i<len;i++){
+					int rand = random.nextInt(Asc_tilde) + Asc_exc;
+					pass.append((char)rand);
 				}
 			}
 		}
-		
-		System.out.println(pass);
-		
-		String pastr = String.valueOf(pass);
-        	String pasha = "";
+		//記号なしのパスワード生成
+		else if(mark.equals("n") || mark.equals("N")){
+			boolean isAscii;
+			
+			for(int j=0;j<4;j++){	
+				for(int i=0;i<len;i++){
+					int rand = random.nextInt(Asc_z) + Asc_0;
+					isAscii = rand >= Asc_0 && rand <= Asc_9 ||
+										rand >= Asc_A && rand <= Asc_Z ||
+										rand >= Asc_a && rand <= Asc_z;
+					
+					if(isAscii)
+						pass.append((char)rand);
+				};
+			}
+		}		
 		
 		try {
-            	MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            	byte[] result = digest.digest(pastr.getBytes());
-            	pasha = String.format("%040x", new BigInteger(1, result));
-        	} catch (Exception e){
-            		e.printStackTrace();
-        	}
+			byte[] passBytes = pass.toString().getBytes(StandardCharsets.UTF_8);
+			Encoder base64Encoder=Base64.getEncoder();
+			
+			String result=new String(base64Encoder.encode(passBytes),StandardCharsets.UTF_8);
+			System.out.println(result);
+    } catch (Exception e){
+      e.printStackTrace();
+    }
 		
-		System.out.println(pasha);
 	}
 }
