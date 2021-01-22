@@ -4,5 +4,17 @@ Cal.java
 	正答率を表示させるようにしました。
 
 Makepass.java
+	
+	読みやすくするために、
+		inal int Asc_exc = '!';
+		final int Asc_0 = '0';
+		final int Asc_9 = '9';
+		final int Asc_A = 'A';
+		final int Asc_Z = 'Z';
+		final int Asc_a = 'a';
+		final int Asc_z = 'z';
+		final int Asc_tilde = '~';
+
+  に変更しました
 	SHA-256からBase64に変更。
 　ソースコードも少し修正。
