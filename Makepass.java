@@ -63,9 +63,7 @@ public class Makepass
 			for(int j=0;j<4;j++){	
 				for(int i=0;i<len;i++){
 					int rand = random.nextInt(Asc_z) + Asc_0;
-					isAscii = rand >= Asc_0 && rand <= Asc_9 ||
-										rand >= Asc_A && rand <= Asc_Z ||
-										rand >= Asc_a && rand <= Asc_z;
+					isAscii = rand >= Asc_0 && rand <= Asc_9 || rand >= Asc_A && rand <= Asc_Z || rand >= Asc_a && rand <= Asc_z;
 					
 					if(isAscii)
 						pass.append((char)rand);
