@@ -16,10 +16,6 @@ public class Makepass
 		//定数を宣言（Asciiコード）
 		final int Asc_exc = '!';
 		final int Asc_0 = '0';
-		final int Asc_9 = '9';
-		final int Asc_A = 'A';
-		final int Asc_Z = 'Z';
-		final int Asc_a = 'a';
 		final int Asc_z = 'z';
 		final int Asc_tilde = '~';
 
@@ -39,15 +35,21 @@ public class Makepass
 		}
 
 		System.out.println("記号：有_y   無_n");
-		mark = scan.next();
+		while(true){
+			mark = scan.next();
+			if(mark.matches("[yYnN]"))
+				break;
+			else
+				System.out.println("yかnで入力してください");
+		}
 		scan.close();
 
 		StringBuilder pass = new StringBuilder();
 
 		Random random = new Random();
 		//記号ありのパスワード生成
-
-		if(mark.equals("y") || mark.equals("Y")){
+		
+		if(mark.matches("[yY]")){
 
 			for(int j=0;j<len;j++){	
 				for(int i=0;i<len;i++){
@@ -57,13 +59,13 @@ public class Makepass
 			}
 		}
 		//記号なしのパスワード生成
-		else if(mark.equals("n") || mark.equals("N")){
+		else if(mark.matches("[nN]")){
 			boolean isAscii;
 
 			for(int j=0;j<4;j++){	
 				for(int i=0;i<len;i++){
 					int rand = random.nextInt(Asc_z) + Asc_0;
-					isAscii = rand >= Asc_0 && rand <= Asc_9 || rand >= Asc_A && rand <= Asc_Z || rand >= Asc_a && rand <= Asc_z;
+					isAscii = String.valueOf((char)rand).matches("[a-zA-Z_0-9]"); // Asciiかどうか
 
 					if(isAscii)
 						pass.append((char)rand);
